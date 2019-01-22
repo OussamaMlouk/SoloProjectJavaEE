@@ -4,3 +4,7 @@ target
 .factorypath
 .project
 bin
+
+*.classpath
+*.project
+/.settings/
