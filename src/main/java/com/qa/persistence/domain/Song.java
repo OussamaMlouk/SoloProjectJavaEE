@@ -1,0 +1,73 @@
+package com.qa.persistence.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Size;
+
+@Entity
+public class Song {
+	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	private Long songId;
+	private String songName;
+	private String alubmName;
+	private String artistName;
+	@Size(min =4, max =4)
+	private String year;
+	
+	public Song() {
+		
+	}
+	
+	public Song(String songName, String albumName, String artistName, String year) {
+		this.songName = songName;
+		this.alubmName = albumName;
+		this.artistName = artistName;
+		this.year = year;
+	}
+
+	public Long getSongId() {
+		return songId;
+	}
+
+	public void setSongId(Long songId) {
+		this.songId = songId;
+	}
+
+	public String getSongName() {
+		return songName;
+	}
+
+	public void setSongName(String songName) {
+		this.songName = songName;
+	}
+
+	public String getAlubmName() {
+		return alubmName;
+	}
+
+	public void setAlubmName(String alubmName) {
+		this.alubmName = alubmName;
+	}
+
+	public String getArtistName() {
+		return artistName;
+	}
+
+	public void setArtistName(String artistName) {
+		this.artistName = artistName;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
+	
+}
