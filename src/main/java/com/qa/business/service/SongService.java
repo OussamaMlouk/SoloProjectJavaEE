@@ -9,5 +9,7 @@ public interface SongService {
 	String deleteSong(Long songId);
 
 	String updateSong(String song, Long songId);
+	
+	String readSong(Long songId);
 
 }

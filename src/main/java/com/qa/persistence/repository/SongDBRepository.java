@@ -35,8 +35,8 @@ public class SongDBRepository implements SongRepository {
 
 	@Transactional(REQUIRED)
 	public String createSong(String song) {
-		Song anSong = util.getObjectForJSON(song, Song.class);
-		em.persist(anSong);
+		Song aSong = util.getObjectForJSON(song, Song.class);
+		em.persist(aSong);
 		return "{\"message\": \"song has been sucessfully added\"}";
 	}
 
@@ -59,6 +59,12 @@ public class SongDBRepository implements SongRepository {
 		} else {
 			return "{\"message\": \"song not found\"}";
 		}
+	}
+
+	public String readSong(Long songId) {
+		String songInDB = util.getJSONForObject(findSong(songId));
+		return songInDB;
+
 	}
 
 	private Song findSong(Long songId) {

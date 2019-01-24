@@ -11,5 +11,7 @@ public interface SongRepository {
 	String deleteSong(Long songId);
 
 	String updateSong(String song, Long songId);
+	
+	String readSong(Long songId);
 
 }

@@ -25,6 +25,10 @@ public class SongServiceImpl implements SongService {
 		return repo.updateSong(song, songId);
 	}
 	
+	public String readSong(Long songId) {
+		return repo.readSong(songId);
+	}
+	
 	public void setRepo(SongRepository repo) {
 		this.repo = repo;
 	}
