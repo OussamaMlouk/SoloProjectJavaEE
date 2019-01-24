@@ -15,6 +15,7 @@ public class Song {
 	private String songName;
 	private String alubmName;
 	private String artistName;
+	private String producerName;
 	@Size(min =4, max =4)
 	private String year;
 	
@@ -22,11 +23,20 @@ public class Song {
 		
 	}
 	
-	public Song(String songName, String albumName, String artistName, String year) {
+	public Song(String songName, String albumName, String artistName, String producerName, String year) {
 		this.songName = songName;
 		this.alubmName = albumName;
 		this.artistName = artistName;
+		this.producerName = producerName;
 		this.year = year;
+	}
+
+	public String getProducerName() {
+		return producerName;
+	}
+
+	public void setProducerName(String producerName) {
+		this.producerName = producerName;
 	}
 
 	public Long getSongId() {
