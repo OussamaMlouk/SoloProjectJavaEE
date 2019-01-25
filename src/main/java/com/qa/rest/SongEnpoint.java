@@ -51,6 +51,13 @@ public class SongEnpoint {
 		return service.updateSong(song, songId);
 	}
 	
+	@Path("/getSongList/{userId}")
+	@GET
+	@Produces({ "application/json" })
+	public String getSongList(@PathParam("userId") Long userId) {
+		return service.getSongList(userId);
+	}
+	
 
 	public void setService(SongService service) {
 		this.service = service;

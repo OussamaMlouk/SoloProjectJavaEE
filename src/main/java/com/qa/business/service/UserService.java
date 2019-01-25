@@ -11,4 +11,5 @@ public interface UserService {
 	String updateUser(String user, Long userId);
 	
 	String readUser(Long userId);
+	
 }
