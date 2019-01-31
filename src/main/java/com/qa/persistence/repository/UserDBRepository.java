@@ -4,6 +4,7 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -30,6 +31,15 @@ public class UserDBRepository implements UserRepository {
 		Collection<User> users = (Collection<User>) query.getResultList();
 		return util.getJSONForObject(users);
 	}
+	
+	public Long getIdFromUserName(String userName) {
+		Query query = em.createQuery("Select userId FROM User u WHERE u.userName = :userName");
+		query.setParameter("userName", userName);
+		@SuppressWarnings("unchecked")
+		List<Long> entries = (List<Long>) query.getResultList();
+		long uID = entries.get(0);
+		return uID;
+	}
 
 	@Transactional(REQUIRED)
 	public String createUser(String user) {
@@ -40,6 +50,16 @@ public class UserDBRepository implements UserRepository {
 
 	@Transactional(REQUIRED)
 	public String deleteUser(Long userId) {
+		User userInDB = findUser(userId);
+		if (userInDB != null) {
+			em.remove(userInDB);
+		}
+		return "{\"message\": \"user sucessfully deleted\"}";
+	}
+	
+	@Transactional(REQUIRED)
+	public String deleteUser(String userName) {
+		Long userId = getIdFromUserName(userName);
 		User userInDB = findUser(userId);
 		if (userInDB != null) {
 			em.remove(userInDB);
@@ -59,14 +79,37 @@ public class UserDBRepository implements UserRepository {
 		}
 	}
 	
+	@Transactional(REQUIRED)
+	public String updateUser(String user, String userName) {
+		Long userId = getIdFromUserName(userName);
+		User userInDB = findUser(userId);
+		if (userInDB != null) {
+			deleteUser(userName);
+			createUser(user);
+			return "{\"message\": \"user successfully updated\"}";
+		} else {
+			return "{\"message\": \"user not found\"}";
+		}
+	}
+	
 
 	public String readUser(Long userId) {
+		String userInDB = util.getJSONForObject(findUser(userId));
+		return userInDB;
+	}
+	
+	public String readUser(String userName) {
+		Long userId = getIdFromUserName(userName);
 		String userInDB = util.getJSONForObject(findUser(userId));
 		return userInDB;
 	}
 
 	public User findUser(Long userId) {
 		return em.find(User.class, userId);
+	}
+	
+	public User findUser(String userName) {
+		return em.find(User.class, userName);
 	}
 
 	public void setManager(EntityManager em) {

@@ -62,11 +62,12 @@ public class SongDBRepository implements SongRepository {
 			return "{\"message\": \"song not found\"}";
 		}
 	}
-	
+
 	public String getSongList(Long userId) {
 		Query query = em.createQuery("SELECT s FROM Song s");
 		Collection<Song> songs = (Collection<Song>) query.getResultList();
-		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId)).collect(Collectors.toList());
+		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
+				.collect(Collectors.toList());
 		return util.getJSONForObject(userSongList);
 	}
 
