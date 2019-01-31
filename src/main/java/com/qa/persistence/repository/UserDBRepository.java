@@ -63,8 +63,11 @@ public class UserDBRepository implements UserRepository {
 		User userInDB = findUser(userId);
 		if (userInDB != null) {
 			em.remove(userInDB);
+			return "{\"message\": \"user sucessfully deleted\"}";
 		}
-		return "{\"message\": \"user sucessfully deleted\"}";
+		else {
+			return "{\"message\": \"user not found\"}";
+		}
 	}
 
 	@Transactional(REQUIRED)
