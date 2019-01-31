@@ -4,6 +4,8 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -59,6 +61,14 @@ public class SongDBRepository implements SongRepository {
 		} else {
 			return "{\"message\": \"song not found\"}";
 		}
+	}
+
+	public String getSongList(Long userId) {
+		Query query = em.createQuery("SELECT s FROM Song s");
+		Collection<Song> songs = (Collection<Song>) query.getResultList();
+		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
+				.collect(Collectors.toList());
+		return util.getJSONForObject(userSongList);
 	}
 
 	public String readSong(Long songId) {
