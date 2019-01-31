@@ -13,5 +13,7 @@ public interface SongRepository {
 	String updateSong(String song, Long songId);
 	
 	String readSong(Long songId);
+	
+	String getSongList(Long userId);
 
 }

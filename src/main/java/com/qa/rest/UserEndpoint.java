@@ -28,6 +28,13 @@ public class UserEndpoint {
 	public String readUser(@PathParam("userId") Long userId) {
 		return service.readUser(userId);
 	}
+	
+	@Path("/readUser/{userName}")
+	@GET
+	@Produces({ "application/json" })
+	public String readUser(@PathParam("userName") String userName) {
+		return service.readUser(userName);
+	}
 
 	@Path("/createUser")
 	@POST
@@ -42,12 +49,26 @@ public class UserEndpoint {
 	public String deleteUser(@PathParam("userId") Long userId) {
 		return service.deleteUser(userId);
 	}
+	
+	@Path("/deleteUser/{userName}")
+	@DELETE
+	@Produces({ "application/json" })
+	public String deleteUser(@PathParam("userName") String userName) {
+		return service.deleteUser(userName);
+	}
 
 	@Path("/updateUser/{userId}")
 	@POST
 	@Produces({ "application/json" })
 	public String updateUser(String user, @PathParam("userId") Long userId) {
 		return service.updateUser(user, userId);
+	}
+
+	@Path("/updateUser/{userName}")
+	@POST
+	@Produces({ "application/json" })
+	public String updateUser(String user, @PathParam("userName") String userName) {
+		return service.updateUser(user, userName);
 	}
 
 	public void setService(UserService service) {
