@@ -29,6 +29,13 @@ public class SongEnpoint {
 	public String readSong(@PathParam("songId") Long songId) {
 		return service.readSong(songId);
 	}
+	
+	@Path("/readSong/{songName}")
+	@GET
+	@Produces({"application/json"})
+	public String readSong(@PathParam("songName") String songName) {
+		return service.readSong(songName);
+	}
 
 	@Path("/createSong")
 	@POST
@@ -44,11 +51,25 @@ public class SongEnpoint {
 		return service.deleteSong(songId);
 	}
 	
+	@Path("/deleteSong/{songName}")
+	@DELETE
+	@Produces({ "application/json" })
+	public String deleteSong(@PathParam("songName") String songName) {
+		return service.deleteSong(songName);
+	}
+	
 	@Path("/updateSong/{songId}")
 	@POST
 	@Produces({"application/json"})
 	public String updateSong(String song, @PathParam("songId") Long songId) {
 		return service.updateSong(song, songId);
+	}
+	
+	@Path("/updateSong/{songName}")
+	@POST
+	@Produces({"application/json"})
+	public String updateSong(String song, @PathParam("songName") String songName) {
+		return service.updateSong(song, songName);
 	}
 	
 	@Path("/getSongList/{userId}")

@@ -6,6 +6,8 @@ public interface UserRepository {
 	
 	String createUser(String user);
 	
+	Long getIdFromUserName(String userName);
+	
 	String deleteUser(Long userId);
 	
 	String deleteUser(String userName);
