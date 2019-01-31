@@ -20,13 +20,25 @@ public class SongServiceImpl implements SongService {
 	public String deleteSong(Long songId) {
 		return repo.deleteSong(songId);
 	}
+	
+	public String deleteSong(String songName) {
+		return repo.deleteSong(songName);
+	}
 
 	public String updateSong(String song, Long songId) {
 		return repo.updateSong(song, songId);
 	}
 	
+	public String updateSong(String song, String songName) {
+		return repo.updateSong(song, songName);
+	}
+	
 	public String readSong(Long songId) {
 		return repo.readSong(songId);
+	}
+	
+	public String readSong(String songName) {
+		return repo.readSong(songName);
 	}
 	
 	public void setRepo(SongRepository repo) {
