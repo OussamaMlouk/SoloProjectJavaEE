@@ -4,6 +4,7 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,15 @@ public class SongDBRepository implements SongRepository {
 		return util.getJSONForObject(songs);
 	}
 
+	public Long getIdFromSongName(String songName) {
+		Query query = em.createQuery("Select songId FROM Song s WHERE s.songName = :songName");
+		query.setParameter("songName", songName);
+		@SuppressWarnings("unchecked")
+		List<Long> entries = (List<Long>) query.getResultList();
+		long sID = entries.get(0);
+		return sID;
+	}
+
 	@Transactional(REQUIRED)
 	public String createSong(String song) {
 		Song aSong = util.getObjectForJSON(song, Song.class);
@@ -52,10 +62,36 @@ public class SongDBRepository implements SongRepository {
 	}
 
 	@Transactional(REQUIRED)
+	public String deleteSong(String songName) {
+		Long songId = getIdFromSongName(songName);
+		Song songInDB = findSong(songId);
+		if (songInDB != null) {
+			em.remove(songInDB);
+			return "{\"message\": \"song sucessfully deleted\"}";
+		} else {
+			return "{\"message\": \"song not found\"}";
+		}
+
+	}
+
+	@Transactional(REQUIRED)
 	public String updateSong(String song, Long songId) {
 		Song songInDB = findSong(songId);
 		if (songInDB != null) {
 			deleteSong(songId);
+			createSong(song);
+			return "{\"message\": \"song successfully updated\"}";
+		} else {
+			return "{\"message\": \"song not found\"}";
+		}
+	}
+	
+	@Transactional(REQUIRED)
+	public String updateSong(String song, String songName) {
+		Long songId = getIdFromSongName(songName);
+		Song songInDB = findSong(songId);
+		if (songInDB != null) {
+			deleteSong(songName);
 			createSong(song);
 			return "{\"message\": \"song successfully updated\"}";
 		} else {
@@ -70,8 +106,28 @@ public class SongDBRepository implements SongRepository {
 				.collect(Collectors.toList());
 		return util.getJSONForObject(userSongList);
 	}
+	
+	public String getSongList(String userName) {
+		Query queryUser = em.createQuery("Select userId FROM User u WHERE u.userName = :userName");
+		queryUser.setParameter("userName", userName);
+		@SuppressWarnings("unchecked")
+		List<Long> entries = (List<Long>) queryUser.getResultList();
+		long userId = entries.get(0);
+		Query querySongList = em.createQuery("SELECT s FROM Song s");
+		Collection<Song> songs = (Collection<Song>) querySongList.getResultList();
+		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
+				.collect(Collectors.toList());
+		return util.getJSONForObject(userSongList);
+	}
 
 	public String readSong(Long songId) {
+		String songInDB = util.getJSONForObject(findSong(songId));
+		return songInDB;
+
+	}
+	
+	public String readSong(String songName) {
+		Long songId = getIdFromSongName(songName);
 		String songInDB = util.getJSONForObject(findSong(songId));
 		return songInDB;
 
