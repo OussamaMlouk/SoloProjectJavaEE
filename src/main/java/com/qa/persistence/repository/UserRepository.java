@@ -14,8 +14,8 @@ public interface UserRepository {
 	
 	String updateUser(String user, Long userId);
 	
-	String updateUser(String user, String userName);
-	
+	String updateUser(String users);
+		
 	String readUser(Long songId);
 	
 	String readUser(String userName);

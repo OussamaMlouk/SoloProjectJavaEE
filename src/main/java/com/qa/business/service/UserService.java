@@ -5,6 +5,8 @@ public interface UserService {
 	String getAllUsers();
 
 	String createUser(String user);
+	
+	Long getIdFromUserName(String userName);
 
 	String deleteUser(Long userId);
 
@@ -12,8 +14,8 @@ public interface UserService {
 	
 	String updateUser(String user, Long userId);
 	
-	String updateUser(String user, String userName);
-	
+	String updateUser(String users);
+		
 	String readUser(Long userId);
 	
 	String readUser(String userName);

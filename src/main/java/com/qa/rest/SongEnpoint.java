@@ -58,6 +58,13 @@ public class SongEnpoint {
 		return service.deleteSong(songName);
 	}
 	
+	@Path("/deleteSong/{userName}/{songName}")
+	@DELETE
+	@Produces({ "application/json" })
+	public String deleteSong(@PathParam("songName") String songName, @PathParam("userName") String userName){
+		return service.deleteSong(songName, userName);
+	}
+	
 	@Path("/updateSong/{songId}")
 	@POST
 	@Produces({"application/json"})
@@ -77,6 +84,13 @@ public class SongEnpoint {
 	@Produces({ "application/json" })
 	public String getSongList(@PathParam("userId") Long userId) {
 		return service.getSongList(userId);
+	}
+	
+	@Path("/getSongList/{userName}")
+	@GET
+	@Produces({ "application/json" })
+	public String getSongList(@PathParam("userName") String userName) {
+		return service.getSongList(userName);
 	}
 	
 

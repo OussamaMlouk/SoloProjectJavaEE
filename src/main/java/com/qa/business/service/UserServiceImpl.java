@@ -16,6 +16,10 @@ public class UserServiceImpl implements UserService {
 	public String createUser(String user) {
 		return repo.createUser(user);
 	}
+	
+	public Long getIdFromUserName(String userName) {
+		return repo.getIdFromUserName(userName);
+	}
 
 	public String deleteUser(Long userId) {
 		return repo.deleteUser(userId);
@@ -29,8 +33,8 @@ public class UserServiceImpl implements UserService {
 		return repo.updateUser(user, userId);
 	}
 	
-	public String updateUser(String user, String userName) {
-		return repo.updateUser(user, userName);
+	public String updateUser(String users) {
+		return repo.updateUser(users);
 	}
 
 	public String readUser(Long userId) {

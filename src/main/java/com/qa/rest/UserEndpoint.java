@@ -35,6 +35,13 @@ public class UserEndpoint {
 	public String readUser(@PathParam("userName") String userName) {
 		return service.readUser(userName);
 	}
+	
+	@Path("/getIdFromUsername/{userName}")
+	@GET
+	@Produces({"application/json"})
+	public Long getIdFromUserName(@PathParam("userName") String userName) {
+		return service.getIdFromUserName(userName);
+	}
 
 	@Path("/createUser")
 	@POST
@@ -63,13 +70,14 @@ public class UserEndpoint {
 	public String updateUser(String user, @PathParam("userId") Long userId) {
 		return service.updateUser(user, userId);
 	}
-
-	@Path("/updateUser/{userName}")
+	
+	@Path("/updateUser")
 	@POST
 	@Produces({ "application/json" })
-	public String updateUser(String user, @PathParam("userName") String userName) {
-		return service.updateUser(user, userName);
+	public String updateUser(String users) {
+		return service.updateUser(users);
 	}
+	
 
 	public void setService(UserService service) {
 		this.service = service;

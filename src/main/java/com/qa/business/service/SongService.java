@@ -9,6 +9,8 @@ public interface SongService {
 	String deleteSong(Long songId);
 	
 	String deleteSong(String songName);
+	
+	String deleteSong(String songName, String userName);
 
 	String updateSong(String song, Long songId);
 	
@@ -19,5 +21,7 @@ public interface SongService {
 	String readSong(String songName);
 	
 	String getSongList(Long userId);
+	
+	String getSongList(String userName);
 
 }

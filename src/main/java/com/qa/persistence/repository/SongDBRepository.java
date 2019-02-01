@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -75,6 +76,28 @@ public class SongDBRepository implements SongRepository {
 	}
 
 	@Transactional(REQUIRED)
+	public String deleteSong(String songName, String userName) {
+		Query queryUser = em.createQuery("Select userId FROM User u WHERE u.userName = :userName");
+		queryUser.setParameter("userName", userName);
+		@SuppressWarnings("unchecked")
+		List<Long> entries = (List<Long>) queryUser.getResultList();
+		long userId = entries.get(0);
+		Query querySongList = em.createQuery("SELECT s FROM Song s");
+		@SuppressWarnings("unchecked")
+		Collection<Song> songs = (Collection<Song>) querySongList.getResultList();
+		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
+				.collect(Collectors.toList());
+		for (Song s : userSongList) {
+			if (s.getSongName().equals(songName)) {
+				userSongList.remove(s);
+				em.remove(s);
+				return "{\"message\": \"song sucessfully deleted\"}";
+			}
+		}
+		return "{\"message\": \"song not found\"}";
+	}
+
+	@Transactional(REQUIRED)
 	public String updateSong(String song, Long songId) {
 		Song songInDB = findSong(songId);
 		if (songInDB != null) {
@@ -85,7 +108,7 @@ public class SongDBRepository implements SongRepository {
 			return "{\"message\": \"song not found\"}";
 		}
 	}
-	
+
 	@Transactional(REQUIRED)
 	public String updateSong(String song, String songName) {
 		Long songId = getIdFromSongName(songName);
@@ -106,7 +129,7 @@ public class SongDBRepository implements SongRepository {
 				.collect(Collectors.toList());
 		return util.getJSONForObject(userSongList);
 	}
-	
+
 	public String getSongList(String userName) {
 		Query queryUser = em.createQuery("Select userId FROM User u WHERE u.userName = :userName");
 		queryUser.setParameter("userName", userName);
@@ -125,7 +148,7 @@ public class SongDBRepository implements SongRepository {
 		return songInDB;
 
 	}
-	
+
 	public String readSong(String songName) {
 		Long songId = getIdFromSongName(songName);
 		String songInDB = util.getJSONForObject(findSong(songId));

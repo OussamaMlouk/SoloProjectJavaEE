@@ -31,7 +31,7 @@ public class UserDBRepository implements UserRepository {
 		Collection<User> users = (Collection<User>) query.getResultList();
 		return util.getJSONForObject(users);
 	}
-	
+
 	public Long getIdFromUserName(String userName) {
 		Query query = em.createQuery("Select userId FROM User u WHERE u.userName = :userName");
 		query.setParameter("userName", userName);
@@ -56,7 +56,7 @@ public class UserDBRepository implements UserRepository {
 		}
 		return "{\"message\": \"user sucessfully deleted\"}";
 	}
-	
+
 	@Transactional(REQUIRED)
 	public String deleteUser(String userName) {
 		Long userId = getIdFromUserName(userName);
@@ -64,8 +64,7 @@ public class UserDBRepository implements UserRepository {
 		if (userInDB != null) {
 			em.remove(userInDB);
 			return "{\"message\": \"user sucessfully deleted\"}";
-		}
-		else {
+		} else {
 			return "{\"message\": \"user not found\"}";
 		}
 	}
@@ -81,26 +80,35 @@ public class UserDBRepository implements UserRepository {
 			return "{\"message\": \"user not found\"}";
 		}
 	}
-	
+
 	@Transactional(REQUIRED)
-	public String updateUser(String user, String userName) {
-		Long userId = getIdFromUserName(userName);
-		User userInDB = findUser(userId);
+	public String updateUser(String users) {
+		User[] Users = util.getObjectForJSON(users, User[].class);
+		User oldUserObject = Users[0];
+		User newUserObject = Users[1];
+		Long oldUserId = oldUserObject.getUserId();
+		String oldUserPassword = oldUserObject.getPassword();
+		String newUserName = newUserObject.getUserName();
+		String newUserPassword = newUserObject.getPassword();
+		User userInDB = findUser(oldUserId);
 		if (userInDB != null) {
-			deleteUser(userName);
-			createUser(user);
-			return "{\"message\": \"user successfully updated\"}";
+			if (userInDB.getPassword().equals(oldUserPassword)) {
+				userInDB.setUserName(newUserName);
+				userInDB.setPassword(newUserPassword);
+				return "{\"message\": \"user successfully updated\"}";
+			} else {
+				return "{\"message\": \"incorrect password\"}";
+			}
 		} else {
 			return "{\"message\": \"user not found\"}";
 		}
 	}
-	
 
 	public String readUser(Long userId) {
 		String userInDB = util.getJSONForObject(findUser(userId));
 		return userInDB;
 	}
-	
+
 	public String readUser(String userName) {
 		Long userId = getIdFromUserName(userName);
 		String userInDB = util.getJSONForObject(findUser(userId));
@@ -110,7 +118,7 @@ public class UserDBRepository implements UserRepository {
 	public User findUser(Long userId) {
 		return em.find(User.class, userId);
 	}
-	
+
 	public User findUser(String userName) {
 		return em.find(User.class, userName);
 	}

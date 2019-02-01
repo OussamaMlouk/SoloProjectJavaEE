@@ -24,6 +24,10 @@ public class SongServiceImpl implements SongService {
 	public String deleteSong(String songName) {
 		return repo.deleteSong(songName);
 	}
+	
+	public String deleteSong(String songName, String userName) {
+		return repo.deleteSong(songName, userName);
+	}
 
 	public String updateSong(String song, Long songId) {
 		return repo.updateSong(song, songId);
@@ -47,6 +51,10 @@ public class SongServiceImpl implements SongService {
 	
 	public String getSongList(Long userId) {
 		return repo.getSongList(userId);
+	}
+	
+	public String getSongList(String userName) {
+		return repo.getSongList(userName);
 	}
 
 }
