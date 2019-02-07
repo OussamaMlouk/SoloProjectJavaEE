@@ -1,5 +1,7 @@
 package com.qa.business.service;
 
+import com.qa.persistence.domain.User;
+
 public interface UserService {
 	
 	String getAllUsers();
@@ -12,6 +14,8 @@ public interface UserService {
 
 	String deleteUser(String userName);
 	
+	String deleteUserWithPassword(String user);
+	
 	String updateUser(String user, Long userId);
 	
 	String updateUser(String users);
@@ -19,5 +23,9 @@ public interface UserService {
 	String readUser(Long userId);
 	
 	String readUser(String userName);
+	
+	User findUser(String userName);
+	
+	User findUser(Long userId);
 	
 }

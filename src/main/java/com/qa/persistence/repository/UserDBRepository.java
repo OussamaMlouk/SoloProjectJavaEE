@@ -70,6 +70,25 @@ public class UserDBRepository implements UserRepository {
 	}
 
 	@Transactional(REQUIRED)
+	public String deleteUserWithPassword(String user) {
+		User inputUser = util.getObjectForJSON(user, User.class);
+		String inputUserName = inputUser.getUserName();
+		String inputUserPassword = inputUser.getPassword();
+		Long userId = getIdFromUserName(inputUserName);
+		User userInDB = findUser(userId);
+		if (userId != null) {
+			if (inputUserPassword.equals(userInDB.getPassword())) {
+				em.remove(userInDB);
+				return "{\"message\": \"user sucessfully deleted\"}";
+			} else {
+				return "{\"message\": \"incorrect password\"}";
+			}
+		} else {
+			return "{\"message\": \"user not found\"}";
+		}
+	}
+
+	@Transactional(REQUIRED)
 	public String updateUser(String user, Long userId) {
 		User userInDB = findUser(userId);
 		if (userInDB != null) {

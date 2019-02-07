@@ -63,6 +63,13 @@ public class UserEndpoint {
 	public String deleteUser(@PathParam("userName") String userName) {
 		return service.deleteUser(userName);
 	}
+	
+	@Path("/deleteUserWithPassword")
+	@DELETE
+	@Produces({ "application/json" })
+	public String deleteUserWithPassword(String user) {
+		return service.deleteUserWithPassword(user);
+	}
 
 	@Path("/updateUser/{userId}")
 	@POST

@@ -87,14 +87,19 @@ public class SongDBRepository implements SongRepository {
 		Collection<Song> songs = (Collection<Song>) querySongList.getResultList();
 		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
 				.collect(Collectors.toList());
-		for (Song s : userSongList) {
-			if (s.getSongName().equals(songName)) {
-				userSongList.remove(s);
-				em.remove(s);
-				return "{\"message\": \"song sucessfully deleted\"}";
+		if (userSongList != null) {
+			for (Song s : userSongList) {
+				if (s.getSongName().equals(songName)) {
+					userSongList.remove(s);
+					em.remove(s);
+					return "{\"message\": \"song sucessfully deleted\"}";
+				}
 			}
+			return "{\"message\": \"song not found\"}";
 		}
-		return "{\"message\": \"song not found\"}";
+		else {
+			return "{\"message\": \"user not found\"}";
+		}
 	}
 
 	@Transactional(REQUIRED)
@@ -140,7 +145,11 @@ public class SongDBRepository implements SongRepository {
 		Collection<Song> songs = (Collection<Song>) querySongList.getResultList();
 		Collection<Song> userSongList = songs.stream().filter(s -> s.getUserId().equals(userId))
 				.collect(Collectors.toList());
-		return util.getJSONForObject(userSongList);
+		if (userSongList != null) {
+			return util.getJSONForObject(userSongList);
+		} else {
+			return "{\"message\": \"user not found\"}";
+		}
 	}
 
 	public String readSong(Long songId) {
