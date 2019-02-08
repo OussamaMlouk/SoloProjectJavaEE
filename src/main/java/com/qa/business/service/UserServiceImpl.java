@@ -78,14 +78,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String updateUser(String users) {
-		User[] Users = util.getObjectForJSON(users, User[].class);
-		User newUserObject = Users[1];
+		User[] usersObject = util.getObjectForJSON(users, User[].class);
+		User newUserObject = usersObject[1];
 		String newUserName = newUserObject.getUserName();
 		String newUserPassword = newUserObject.getPassword();
 		Query query = em.createQuery("SELECT userName FROM User u");
 		Collection<String> userNames = (Collection<String>) query.getResultList();
-		String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{3,}$";
-		Pattern pattern = Pattern.compile(passwordPattern);
+		String regexPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{3,}$";
+		Pattern pattern = Pattern.compile(regexPassword);
 		Matcher matcher = pattern.matcher(newUserPassword);
 		for (String userName : userNames) {
 			if (newUserName.equals(userName)) {

@@ -37,8 +37,7 @@ public class UserDBRepository implements UserRepository {
 		query.setParameter("userName", userName);
 		@SuppressWarnings("unchecked")
 		List<Long> entries = (List<Long>) query.getResultList();
-		long uID = entries.get(0);
-		return uID;
+		return entries.get(0);
 	}
 
 	@Transactional(REQUIRED)
@@ -102,9 +101,9 @@ public class UserDBRepository implements UserRepository {
 
 	@Transactional(REQUIRED)
 	public String updateUser(String users) {
-		User[] Users = util.getObjectForJSON(users, User[].class);
-		User oldUserObject = Users[0];
-		User newUserObject = Users[1];
+		User[] usersObjects = util.getObjectForJSON(users, User[].class);
+		User oldUserObject = usersObjects[0];
+		User newUserObject = usersObjects[1];
 		Long oldUserId = oldUserObject.getUserId();
 		String oldUserPassword = oldUserObject.getPassword();
 		String newUserName = newUserObject.getUserName();
@@ -124,14 +123,12 @@ public class UserDBRepository implements UserRepository {
 	}
 
 	public String readUser(Long userId) {
-		String userInDB = util.getJSONForObject(findUser(userId));
-		return userInDB;
+		return util.getJSONForObject(findUser(userId));
 	}
 
 	public String readUser(String userName) {
 		Long userId = getIdFromUserName(userName);
-		String userInDB = util.getJSONForObject(findUser(userId));
-		return userInDB;
+		return util.getJSONForObject(findUser(userId));
 	}
 
 	public User findUser(Long userId) {

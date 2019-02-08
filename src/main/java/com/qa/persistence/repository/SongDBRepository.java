@@ -5,9 +5,8 @@ import static javax.transaction.Transactional.TxType.SUPPORTS;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Supplier;
+
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -17,8 +16,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import com.qa.persistence.domain.Song;
-import com.qa.persistence.domain.Song;
-import com.qa.persistence.domain.Song;
+
 import com.qa.util.JSONUtil;
 
 @Transactional(SUPPORTS)
@@ -42,8 +40,7 @@ public class SongDBRepository implements SongRepository {
 		query.setParameter("songName", songName);
 		@SuppressWarnings("unchecked")
 		List<Long> entries = (List<Long>) query.getResultList();
-		long sID = entries.get(0);
-		return sID;
+		return entries.get(0);
 	}
 
 	@Transactional(REQUIRED)
@@ -96,8 +93,7 @@ public class SongDBRepository implements SongRepository {
 				}
 			}
 			return "{\"message\": \"song not found\"}";
-		}
-		else {
+		} else {
 			return "{\"message\": \"user not found\"}";
 		}
 	}
@@ -153,15 +149,13 @@ public class SongDBRepository implements SongRepository {
 	}
 
 	public String readSong(Long songId) {
-		String songInDB = util.getJSONForObject(findSong(songId));
-		return songInDB;
+		return util.getJSONForObject(findSong(songId));
 
 	}
 
 	public String readSong(String songName) {
 		Long songId = getIdFromSongName(songName);
-		String songInDB = util.getJSONForObject(findSong(songId));
-		return songInDB;
+		return util.getJSONForObject(findSong(songId));
 
 	}
 

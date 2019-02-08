@@ -1,19 +1,16 @@
 package com.qa.persistence.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "SONG")
 public class Song {
-	
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Long songId;
@@ -21,15 +18,16 @@ public class Song {
 	private String albumName;
 	private String artistName;
 	private String producerName;
-	@Size(min =4, max =4)
+	@Size(min = 4, max = 4)
 	private String year;
-	
+
 	private Long userId;
-	
+
 	public Song() {
-		
+		// empty constructor is needed to create a new instance via reflection by your
+		// persistence framework
 	}
-	
+
 	public Song(String songName, String albumName, String artistName, String producerName, String year) {
 		this.songName = songName;
 		this.albumName = albumName;
@@ -93,6 +91,5 @@ public class Song {
 	public void setUser(Long userId) {
 		this.userId = userId;
 	}
-	
-	
+
 }

@@ -44,22 +44,15 @@ public class SongServiceImpl implements SongService {
 		Pattern pattern = Pattern.compile(yearPattern);
 		Matcher matcher = pattern.matcher(newYear);
 		for (Song userSongs : userSongList) {
-			if (newSongName.equals(userSongs.getSongName())) {
-				if (newArtistName.equals(userSongs.getArtistName())) {
-					if (newAlbumName.equals(userSongs.getAlbumName())) {
-						if (newProducerName.equals(userSongs.getProducerName())) {
-							if (newYear.equals(userSongs.getYear())) {
-								return "{\"message\": \"you already have this song\"}";
-							}
-						}
-					}
+			if (newSongName.equals(userSongs.getSongName()) && newArtistName.equals(userSongs.getArtistName())
+					&& newAlbumName.equals(userSongs.getAlbumName())) {
+				if (newProducerName.equals(userSongs.getProducerName()) && newYear.equals(userSongs.getYear())) {
+					return "{\"message\": \"you already have this song\"}";
 				}
 			}
-
 		}
 		if (matcher.matches()) {
-			if ((newArtistName.toLowerCase().equals("kanye west"))
-					|| (newProducerName.toLowerCase().equals("kanye west"))) {
+			if (("Kanye West".equalsIgnoreCase(newArtistName)) || ("Kanye West".equalsIgnoreCase(newProducerName))) {
 				return repo.createSong(song);
 			} else {
 				return "{\"message\": \"Kanye West must be the artist or the producer for this song\"}";
@@ -67,6 +60,7 @@ public class SongServiceImpl implements SongService {
 		} else {
 			return "{\"message\": \"year must be four digits\"}";
 		}
+
 	}
 
 	public String deleteSong(Long songId) {
